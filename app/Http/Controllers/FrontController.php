@@ -75,25 +75,49 @@ class FrontController extends Controller
         }
     }
 
+    // public function paymentMidtransNotification(Request $request)
+    // {
+    //     try {
+    //         // Process the Midtrans notification through the service
+    //         $transactionStatus = $this->paymentService->handlePaymentNotification();
+
+    //         if (!$transactionStatus) {
+    //             return response()->json(['error' => 'Invalid notification data.'], 400);
+    //         }
+
+    //         // Respond with the status of the transaction
+
+    //         // transaction has been created in database
+    //         return response()->json(['status' => $transactionStatus]);
+    //     } catch (\Exception $e) {
+    //         Log::error('Failed to handle Midtrans notification:', ['error' => $e->getMessage()]);
+    //         return response()->json(['error' => 'Failed to process notification.'], 500);
+    //     }
+    // }
+
     public function paymentMidtransNotification(Request $request)
     {
         try {
-            // Process the Midtrans notification through the service
+            // Log notifikasi untuk debugging
+            Log::info('Midtrans Notification:', $request->all());
+
+            // Proses notifikasi dalam service
             $transactionStatus = $this->paymentService->handlePaymentNotification();
 
-            if (!$transactionStatus) {
-                return response()->json(['error' => 'Invalid notification data.'], 400);
-            }
-
-            // Respond with the status of the transaction
-
-            // transaction has been created in database
-            return response()->json(['status' => $transactionStatus]);
+            // Tidak perlu kembalikan error 400
+            // Karena Midtrans hanya butuh 200 OK
+            return response()->json(['status' => $transactionStatus ?? 'received'], 200);
         } catch (\Exception $e) {
-            Log::error('Failed to handle Midtrans notification:', ['error' => $e->getMessage()]);
-            return response()->json(['error' => 'Failed to process notification.'], 500);
+
+            Log::error('Failed to handle Midtrans notification:', [
+                'message' => $e->getMessage(),
+            ]);
+
+            // Tetap balas 200!
+            return response()->json(['status' => 'error_logged'], 200);
         }
     }
+
 
     public function checkout_success()
     {

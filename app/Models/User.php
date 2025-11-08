@@ -72,7 +72,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
             ->first();
     }
 
-    public function hasActiveSubscriptione()
+    public function hasActiveSubscription()
     {
         return $this->transactions()
             ->where('is_paid', true)

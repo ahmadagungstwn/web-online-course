@@ -155,10 +155,8 @@
 
 @endsection
 @push('after-scripts')
-    {{-- <script src="{{ asset('js/dropdown-navbar.js') }}"></script> --}}
-
     <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
-    data-client-key="{{ config('midtrans.clientKey') }}"></script>
+        data-client-key="{{ config('midtrans.clientKey') }}"></script>
 
     <script type="text/javascript">
         const payButton = document.getElementById('pay-button');
